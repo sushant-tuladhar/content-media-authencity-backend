@@ -79,6 +79,12 @@ async function welcomeEmail(userEmail){
     }
 }
 
+/**
+ * Handles user login.
+ * @param {*} req has the email and password in the body of the request
+ * @param {*} res 
+ * @returns 
+ */
 exports.login= async (req,res)=>{
     const schema=Joi.object({
         email:Joi.string().email().required(),
@@ -108,10 +114,20 @@ exports.login= async (req,res)=>{
 
         // If login is successful, set user session and respond
         req.session.user = userRes; // Store user info in session
+        await userLoginHistory(userRes._id, req.ip);
         return res.status(200).json({ message: 'Login successful', user: userRes });
     }
     catch (err){
         console.error(err);
         return res.status(500).json({ error: 'Internal server error' });
     }
+}
+
+async function userLoginHistory(userId, ip){
+    const userLoginHistory = new UserLoginHistory({
+        userId: userId,
+        loginTime: new Date(),
+        ipAddress: ip
+    });
+    await userLoginHistory.save();
 }

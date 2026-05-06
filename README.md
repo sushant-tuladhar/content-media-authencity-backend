@@ -13,8 +13,8 @@ Content Media Authencity backend
 
 # Instructions for variables required in the .env file
 
-MONGODB_URI=your_mongo_url<br>
-SESSION_SECRET=yourSecretKey <br>
-PORT=your_running_port <br>
-EMAIL_USER=email_for_sending_email_verfication_here <br>
-EMAIL_PASS=password_of_above_email <br>
+<code>MONGODB_URI</code>=your_mongo_url<br>
+<code>SESSION_SECRET</code>=yourSecretKey <br>
+<code>PORT</code>=your_running_port <br>
+<code>EMAIL_USER</code>=email_for_sending_email_verfication_here <br>
+<code>EMAIL_PASS</code>=password_of_above_email <br>

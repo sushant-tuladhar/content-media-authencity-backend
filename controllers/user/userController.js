@@ -1,6 +1,13 @@
 const express= require('express');
 const { User } = require('../../models/user/user');
 
+
+/**
+ * Fetches the user profile for a given user ID.
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 exports.getUserProfile= async (req,res)=>{
     const userId = req.params.id;
 

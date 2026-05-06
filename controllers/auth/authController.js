@@ -6,7 +6,12 @@ const {
 const bcrypt = require('bcrypt');
 const nodemailer=require('nodemailer');
 
-
+/**
+ * Registers a new user.
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 exports.registerUser= async (req,res)=>{
     if(req.body ==undefined){
         return res.status(400).json({ error: "Invalid request body" });
@@ -44,7 +49,10 @@ exports.registerUser= async (req,res)=>{
     }
 };
 
-
+/**
+ * Sends a welcome email to the new user.
+ * @param {*} userEmail The email address of the user which we need to send the email
+ */
 async function welcomeEmail(userEmail){
     const transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',

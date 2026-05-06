@@ -6,6 +6,9 @@ Content Media Authencity backend
   <li>Clone the repository </li>
   <li>Run the command <code>npm i </code></li>
   <li>Create the <code>.env</code> file</li>
+  <li>Install one global package <code>npm i -g nodemon</code></li>
+  <li>Run the following code <code>nodemon app.js</code></li>
+  <li>Check the port you have mentioned in the <code>.env</code> file and run it as <code>localhost:3000/</code></li>
 </ol>
 
 # Instructions for variables required in the .env file

@@ -13,7 +13,8 @@ const userSchema= mongoose.Schema({
      isAdminVerified: { type: Boolean, default: false },
      isEmailVerified: { type: Boolean, default: false },
      lastLogin: { type: Date, default: Date.now },
-     isDeleted: { type: Boolean, default: false }
+     isDeleted: { type: Boolean, default: false },
+     token: { type: String, required: true , expires: '1h' }
 });
 
 

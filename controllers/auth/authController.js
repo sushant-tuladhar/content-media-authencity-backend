@@ -5,6 +5,7 @@ const {
 } = require('../../models/user/user');
 const bcrypt = require('bcrypt');
 const nodemailer=require('nodemailer');
+const jwt= require('jsonwebtoken');
 
 /**
  * Registers a new user.
@@ -114,8 +115,16 @@ exports.login= async (req,res)=>{
 
         // If login is successful, set user session and respond
         req.session.user = userRes; // Store user info in session
+
+        const payload = ({
+            userId: userRes._id,
+            email: userRes.email,
+            isAdmin: userRes.isAdmin
+        });
+
+        const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
         await userLoginHistory(userRes._id, req.ip);
-        return res.status(200).json({ message: 'Login successful', user: userRes });
+        return res.status(200).json({ message: 'Login successful', user: userRes, token: 'Bearer ' + token });
     }
     catch (err){
         console.error(err);

@@ -18,3 +18,6 @@ Content Media Authencity backend
 <code>PORT</code>=your_running_port <br>
 <code>EMAIL_USER</code>=email_for_sending_email_verfication_here <br>
 <code>EMAIL_PASS</code>=password_of_above_email <br>
+<code>GOOGLE_CLIENT_ID</code>=google_oauth_client_id <br>
+<code>GOOGLE_CLIENT_SECRET</code>=google_oauth_client_secret <br>
+<code>GOOGLE_CALLBACK_URL</code>=http://localhost:3000/api/auth/google/callback <br>

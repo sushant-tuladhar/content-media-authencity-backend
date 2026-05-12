@@ -132,6 +132,34 @@ exports.login= async (req,res)=>{
     }
 }
 
+exports.googleLoginSuccess = async (req, res) => {
+    if (!req.user) {
+        return res.status(401).json({ error: 'Google authentication failed' });
+    }
+
+    try {
+        req.session.user = req.user;
+
+        const payload = ({
+            userId: req.user._id,
+            email: req.user.email,
+            isAdmin: req.user.isAdmin
+        });
+
+        const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
+        await userLoginHistory(req.user._id, req.ip);
+
+        return res.status(200).json({
+            message: 'Google login successful',
+            user: req.user,
+            token: 'Bearer ' + token
+        });
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
 async function userLoginHistory(userId, ip){
     const userLoginHistory = new UserLoginHistory({
         userId: userId,

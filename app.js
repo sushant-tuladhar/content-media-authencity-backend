@@ -9,7 +9,7 @@ const cors=require('cors');
 const mongoose=require('mongoose');
 const session=require('express-session');
 const flash=require('connect-flash');
-const passport=require('passport');
+const passport=require('./config/passport');
 const { sessionTimeout } = require('./middleware/auth');
 
 //Initialize the routes here

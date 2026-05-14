@@ -886,6 +886,71 @@
                 }
               },
               "response": []
+            },
+            {
+              "name": "Login user Admin",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test('Status to have the code 200', function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "\r",
+                      "});\r",
+                      "\r",
+                      "pm.test('Check if the token exists', function (){\r",
+                      "    const body = pm.response.json();\r",
+                      "    pm.expect(body.token).to.not.be.null;\r",
+                      "    pm.collectionVariables.set(\"admin_token\", body.token);\r",
+                      "    pm.collectionVariables.set(\"admin_user_id\",body.user._id);\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "email",
+                      "value": "tuladharsushant01@gmail.com",
+                      "type": "text",
+                      "uuid": "c5b82b05-4558-48bc-874e-fdbe96e6b868"
+                    },
+                    {
+                      "key": "password",
+                      "value": "Test@123",
+                      "type": "text",
+                      "uuid": "48d46486-c0df-4a4a-81d6-ce4d39ef8b3e"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "localhost:3000/api/login",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "login"
+                  ]
+                }
+              },
+              "response": []
             }
           ]
         },
@@ -1403,51 +1468,411 @@
       ]
     },
     {
-      "name": "Get Settings",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "localhost:3000/api/settings",
-          "host": [
-            "localhost"
-          ],
-          "port": "3000",
-          "path": [
-            "api",
-            "settings"
+      "name": "Get User Settings",
+      "item": [
+        {
+          "name": "Get User Settings Valid Test cases",
+          "item": [
+            {
+              "name": "Get Settings",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Check if settings is an array\", function () {\r",
+                      "    pm.response.to.have.jsonBody('settings');\r",
+                      "    pm.expect(pm.response.json().settings).to.be.an('array');\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "{{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "localhost:3000/api/settings",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "settings"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Get User Settings Invalid Test cases",
+          "item": [
+            {
+              "name": "Get Settings No authorization token",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 401\", function () {\r",
+                      "    pm.response.to.have.status(401);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Response body contains error message\", function () {\r",
+                      "    pm.expect(pm.response.json().error).equal(\"No token provided\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "localhost:3000/api/settings",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "settings"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Settings with Random token",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 403\", function () {\r",
+                      "    pm.response.to.have.status(403);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Response body contains error message\", function () {\r",
+                      "    pm.expect(pm.response.json().error).equal(\"Invalid token\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer 1212",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "localhost:3000/api/settings",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "settings"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Settings with Valid token but not admin user",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 403\", function () {\r",
+                      "    pm.response.to.have.status(403);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Response body contains error message\", function () {\r",
+                      "    pm.expect(pm.response.json().error).equal(\"Access denied\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "{{token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "localhost:3000/api/settings",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "settings"
+                  ]
+                }
+              },
+              "response": []
+            }
           ]
         }
-      },
-      "response": []
+      ]
     },
     {
       "name": "Update Settings",
-      "request": {
-        "method": "PUT",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\r\n    \"key\": \"video_format\",\r\n    \"value\": [\r\n        \".mp4\", \".avi\", \".mov\"\r\n    ]\r\n}",
-          "options": {
-            "raw": {
-              "language": "json"
+      "item": [
+        {
+          "name": "Update Settings Valid Test Cases",
+          "item": [
+            {
+              "name": "Update Settings",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Check if settings is present in response body\", function () {\r",
+                      "    pm.response.to.have.jsonBody('settings');\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "{{admin_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"key\": \"video_format\",\r\n    \"value\": [\r\n        \".mp4\", \".avi\", \".mov\"\r\n    ]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "localhost:3000/api/settings",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "settings"
+                  ]
+                }
+              },
+              "response": []
             }
-          }
+          ]
         },
-        "url": {
-          "raw": "localhost:3000/api/settings",
-          "host": [
-            "localhost"
-          ],
-          "port": "3000",
-          "path": [
-            "api",
-            "settings"
+        {
+          "name": "Update Settings Invalid Test Cases",
+          "item": [
+            {
+              "name": "Update Settings No Authorization Token",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 401\", function () {\r",
+                      "    pm.response.to.have.status(401);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Response body contains error message\", function () {\r",
+                      "    pm.expect(pm.response.json().error).equal(\"No token provided\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"key\": \"video_format\",\r\n    \"value\": [\r\n        \".mp4\", \".avi\", \".mov\"\r\n    ]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "localhost:3000/api/settings",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "settings"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Settings Random Token",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 403\", function () {\r",
+                      "    pm.response.to.have.status(403);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Response body contains error message\", function () {\r",
+                      "    pm.expect(pm.response.json().error).equal(\"Invalid token\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer 1233",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"key\": \"video_format\",\r\n    \"value\": [\r\n        \".mp4\", \".avi\", \".mov\"\r\n    ]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "localhost:3000/api/settings",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "settings"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Settings Valid Token but not admin",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 403\", function () {\r",
+                      "    pm.response.to.have.status(403);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Response body contains error message\", function () {\r",
+                      "    pm.expect(pm.response.json().error).equal(\"Access denied\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "{{token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"key\": \"video_format\",\r\n    \"value\": [\r\n        \".mp4\", \".avi\", \".mov\"\r\n    ]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "localhost:3000/api/settings",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "settings"
+                  ]
+                }
+              },
+              "response": []
+            }
           ]
         }
-      },
-      "response": []
+      ]
     }
   ],
   "variable": [
@@ -1461,6 +1886,14 @@
     },
     {
       "key": "user_id",
+      "value": ""
+    },
+    {
+      "key": "admin_user_id",
+      "value": ""
+    },
+    {
+      "key": "admin_token",
       "value": ""
     }
   ]

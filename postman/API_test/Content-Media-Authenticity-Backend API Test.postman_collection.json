@@ -838,6 +838,7 @@
                       "    const body = pm.response.json();\r",
                       "    pm.expect(body.token).to.not.be.null;\r",
                       "    pm.collectionVariables.set(\"token\", body.token);\r",
+                      "    pm.collectionVariables.set(\"user_id\",body.user._id);\r",
                       "});"
                     ],
                     "type": "text/javascript",
@@ -1029,6 +1030,31 @@
           "item": [
             {
               "name": "Get the user details",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "})\r",
+                      "\r",
+                      "pm.test(\"User details are returned\", function () {\r",
+                      "    pm.expect(pm.response.json().user).not.equal(null);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"User ID is correct\", function () {\r",
+                      "    pm.expect(pm.response.json().user._id).to.eql(pm.collectionVariables.get(\"user_id\"));\r",
+                      "});\r",
+                      "\r",
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
               "request": {
                 "method": "GET",
                 "header": [
@@ -1109,43 +1135,272 @@
       ]
     },
     {
-      "name": "Get User Videos",
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      },
-      "request": {
-        "method": "GET",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json",
-            "type": "text"
-          }
-        ],
-        "body": {
-          "mode": "urlencoded",
-          "urlencoded": [
+      "name": "User Videos",
+      "item": [
+        {
+          "name": "Get User videos Valid",
+          "item": [
             {
-              "key": "user_id",
-              "value": "69fad0d3bc0481478e93e2d2",
-              "type": "text",
-              "uuid": "48d46486-c0df-4a4a-81d6-ce4d39ef8b3e"
+              "name": "Get User Videos",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Videos are returned\", function(){\r",
+                      "    pm.expect(pm.response.json().videos).to.have.length.gte(0);\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "{{token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "user_id",
+                      "value": "{{user_id}}",
+                      "type": "text",
+                      "uuid": "48d46486-c0df-4a4a-81d6-ce4d39ef8b3e"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "localhost:3000/api/videos",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "videos"
+                  ]
+                }
+              },
+              "response": []
             }
           ]
         },
-        "url": {
-          "raw": "localhost:3000/api/videos",
-          "host": [
-            "localhost"
-          ],
-          "port": "3000",
-          "path": [
-            "api",
-            "videos"
+        {
+          "name": "Get User Videos Invalid Test Cases",
+          "item": [
+            {
+              "name": "Get User Videos no User_id",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 500\", function () {\r",
+                      "    pm.response.to.have.status(500);\r",
+                      "});\r",
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "{{token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "user_id",
+                      "value": "69fad0d3bc0481478e93e2d2",
+                      "type": "text",
+                      "uuid": "48d46486-c0df-4a4a-81d6-ce4d39ef8b3e",
+                      "disabled": true
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "localhost:3000/api/videos",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "videos"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get User Videos no Authorization token",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 401\", function () {\r",
+                      "    pm.response.to.have.status(401);\r",
+                      "});\r",
+                      "\r",
+                      "\r",
+                      "pm.test(\"Error message is 'No token provided'\", function () {\r",
+                      "    pm.expect(pm.response.json().error).to.eql(\"No token provided\");\r",
+                      "})"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "{{token}}",
+                    "type": "text",
+                    "disabled": true
+                  }
+                ],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "user_id",
+                      "value": "{{user_id}}",
+                      "type": "text",
+                      "uuid": "48d46486-c0df-4a4a-81d6-ce4d39ef8b3e"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "localhost:3000/api/videos",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "videos"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get User Videos random token",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 403\", function () {\r",
+                      "    pm.response.to.have.status(403);\r",
+                      "});\r",
+                      "\r",
+                      "\r",
+                      "pm.test(\"Error message is 'Invalid token'\", function () {\r",
+                      "    pm.expect(pm.response.json().error).to.eql(\"Invalid token\");\r",
+                      "})"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer asda",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "user_id",
+                      "value": "{{user_id}}",
+                      "type": "text",
+                      "uuid": "48d46486-c0df-4a4a-81d6-ce4d39ef8b3e"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "localhost:3000/api/videos",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "videos"
+                  ]
+                }
+              },
+              "response": []
+            }
           ]
         }
-      },
-      "response": []
+      ]
     },
     {
       "name": "Get Settings",

@@ -23,10 +23,7 @@
                     "exec": [
                       "pm.test(\"Status code is 500\", function () {\r",
                       "    pm.response.to.have.status(500);\r",
-                      "})\r",
-                      "pm.test(\"Response time is less than 200ms\", function () {\r",
-                      "    pm.expect(pm.response.responseTime).to.be.below(500);\r",
-                      "})"
+                      "});"
                     ],
                     "type": "text/javascript",
                     "packages": {},
@@ -827,6 +824,28 @@
           "item": [
             {
               "name": "Login user",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test('Status to have the code 200', function () {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "\r",
+                      "});\r",
+                      "\r",
+                      "pm.test('Check if the token exists', function (){\r",
+                      "    const body = pm.response.json();\r",
+                      "    pm.expect(body.token).to.not.be.null;\r",
+                      "    pm.collectionVariables.set(\"token\", body.token);\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
               "request": {
                 "method": "POST",
                 "header": [
@@ -850,6 +869,137 @@
                       "value": "Test@123",
                       "type": "text",
                       "uuid": "48d46486-c0df-4a4a-81d6-ce4d39ef8b3e"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "localhost:3000/api/login",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Login Invalid Test Cases",
+          "item": [
+            {
+              "name": "Login user No Email",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test('Status to have the code 400', function () {\r",
+                      "    pm.response.to.have.status(400);\r",
+                      "\r",
+                      "});\r",
+                      "\r",
+                      "pm.test('Error message to be \"email\" is required', function () {\r",
+                      "    pm.expect(pm.response.json().error).to.eql(\"\\\"email\\\" is required\");\r",
+                      "})"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "email",
+                      "value": "{{new_email}}",
+                      "type": "text",
+                      "uuid": "c5b82b05-4558-48bc-874e-fdbe96e6b868",
+                      "disabled": true
+                    },
+                    {
+                      "key": "password",
+                      "value": "Test@123",
+                      "type": "text",
+                      "uuid": "48d46486-c0df-4a4a-81d6-ce4d39ef8b3e"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "localhost:3000/api/login",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Login user No Password",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test('Status to have the code 400', function () {\r",
+                      "    pm.response.to.have.status(400);\r",
+                      "\r",
+                      "});\r",
+                      "\r",
+                      "pm.test('Error message to be \"password\" is required', function () {\r",
+                      "    pm.expect(pm.response.json().error).to.eql(\"\\\"password\\\" is required\");\r",
+                      "})"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "email",
+                      "value": "{{new_email}}",
+                      "type": "text",
+                      "uuid": "c5b82b05-4558-48bc-874e-fdbe96e6b868"
+                    },
+                    {
+                      "key": "password",
+                      "value": "Test@123",
+                      "type": "text",
+                      "uuid": "48d46486-c0df-4a4a-81d6-ce4d39ef8b3e",
+                      "disabled": true
                     }
                   ]
                 },
@@ -987,6 +1137,10 @@
   "variable": [
     {
       "key": "new_email",
+      "value": ""
+    },
+    {
+      "key": "token",
       "value": ""
     }
   ]

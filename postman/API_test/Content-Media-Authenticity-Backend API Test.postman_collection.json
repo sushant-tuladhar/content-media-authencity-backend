@@ -1,0 +1,993 @@
+{
+  "info": {
+    "_postman_id": "47f43f8f-7b29-4b90-b19f-bee60fbd9109",
+    "name": "Content-Media-Authenticity-Backend API Test",
+    "description": "### Welcome to Postman! This is your first collection. \n\nCollections are your starting point for building and testing APIs. You can use this one to:\n\n• Group related requests\n• Test your API in real-world scenarios\n• Document and share your requests\n\nUpdate the name and overview whenever you’re ready to make it yours.\n\n[Learn more about Postman Collections.](https://learning.postman.com/docs/collections/collections-overview/)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "49695493",
+    "_collection_link": "https://go.postman.co/collection/49695493-47f43f8f-7b29-4b90-b19f-bee60fbd9109?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Register",
+      "item": [
+        {
+          "name": "Register User Invalid Test Cases",
+          "item": [
+            {
+              "name": "Register the User with Existing Email Address",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 500\", function () {\r",
+                      "    pm.response.to.have.status(500);\r",
+                      "})\r",
+                      "pm.test(\"Response time is less than 200ms\", function () {\r",
+                      "    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+                      "})"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "first_name",
+                      "value": "Sushant",
+                      "type": "text",
+                      "uuid": "9dd6fdc7-459c-4b21-8f18-0cff93a88f57"
+                    },
+                    {
+                      "key": "last_name",
+                      "value": "Tuladhar",
+                      "type": "text",
+                      "uuid": "1bd8cf4c-0e4a-4d4d-a14c-cf6b4468b02a"
+                    },
+                    {
+                      "key": "email",
+                      "value": "tuladharsushant01@gmail.com",
+                      "type": "text",
+                      "uuid": "c5b82b05-4558-48bc-874e-fdbe96e6b868"
+                    },
+                    {
+                      "key": "dob",
+                      "value": "1996-01-14",
+                      "type": "text",
+                      "uuid": "ce60398f-3d68-4a22-9eec-a32852dda83a"
+                    },
+                    {
+                      "key": "phone",
+                      "value": "0401109194",
+                      "type": "text",
+                      "uuid": "4f2de0cf-7003-4fc3-81c4-940414b54fed"
+                    },
+                    {
+                      "key": "password",
+                      "value": "Test@123",
+                      "type": "text",
+                      "uuid": "48d46486-c0df-4a4a-81d6-ce4d39ef8b3e"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "localhost:3000/api/register",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "register"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Register the User with No First Name",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 400\", function () {\r",
+                      "    pm.response.to.have.status(400);\r",
+                      "    const body = pm.response.json();\r",
+                      "    pm.expect(body.error).to.eql(\"\\\"first_name\\\" is required\");\r",
+                      "})\r",
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "first_name",
+                      "value": "Sushant",
+                      "type": "text",
+                      "uuid": "9dd6fdc7-459c-4b21-8f18-0cff93a88f57",
+                      "disabled": true
+                    },
+                    {
+                      "key": "last_name",
+                      "value": "Tuladhar",
+                      "type": "text",
+                      "uuid": "1bd8cf4c-0e4a-4d4d-a14c-cf6b4468b02a"
+                    },
+                    {
+                      "key": "email",
+                      "value": "tuladharsushant01@gmail.com",
+                      "type": "text",
+                      "uuid": "c5b82b05-4558-48bc-874e-fdbe96e6b868"
+                    },
+                    {
+                      "key": "dob",
+                      "value": "1996-01-14",
+                      "type": "text",
+                      "uuid": "ce60398f-3d68-4a22-9eec-a32852dda83a"
+                    },
+                    {
+                      "key": "phone",
+                      "value": "0401109194",
+                      "type": "text",
+                      "uuid": "4f2de0cf-7003-4fc3-81c4-940414b54fed"
+                    },
+                    {
+                      "key": "password",
+                      "value": "Test@123",
+                      "type": "text",
+                      "uuid": "48d46486-c0df-4a4a-81d6-ce4d39ef8b3e"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "localhost:3000/api/register",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "register"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Register the User with No Last Name",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 400\", function () {\r",
+                      "    pm.response.to.have.status(400);\r",
+                      "    const body = pm.response.json();\r",
+                      "    pm.expect(body.error).to.eql(\"\\\"last_name\\\" is required\");\r",
+                      "})\r",
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "first_name",
+                      "value": "Sushant",
+                      "type": "text",
+                      "uuid": "9dd6fdc7-459c-4b21-8f18-0cff93a88f57"
+                    },
+                    {
+                      "key": "last_name",
+                      "value": "Tuladhar",
+                      "type": "text",
+                      "uuid": "1bd8cf4c-0e4a-4d4d-a14c-cf6b4468b02a",
+                      "disabled": true
+                    },
+                    {
+                      "key": "email",
+                      "value": "tuladharsushant01@gmail.com",
+                      "type": "text",
+                      "uuid": "c5b82b05-4558-48bc-874e-fdbe96e6b868"
+                    },
+                    {
+                      "key": "dob",
+                      "value": "1996-01-14",
+                      "type": "text",
+                      "uuid": "ce60398f-3d68-4a22-9eec-a32852dda83a"
+                    },
+                    {
+                      "key": "phone",
+                      "value": "0401109194",
+                      "type": "text",
+                      "uuid": "4f2de0cf-7003-4fc3-81c4-940414b54fed"
+                    },
+                    {
+                      "key": "password",
+                      "value": "Test@123",
+                      "type": "text",
+                      "uuid": "48d46486-c0df-4a4a-81d6-ce4d39ef8b3e"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "localhost:3000/api/register",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "register"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Register the User with No Email",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 400\", function () {\r",
+                      "    pm.response.to.have.status(400);\r",
+                      "    const body = pm.response.json();\r",
+                      "    pm.expect(body.error).to.eql(\"\\\"email\\\" is required\");\r",
+                      "})\r",
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "first_name",
+                      "value": "Sushant",
+                      "type": "text",
+                      "uuid": "9dd6fdc7-459c-4b21-8f18-0cff93a88f57"
+                    },
+                    {
+                      "key": "last_name",
+                      "value": "Tuladhar",
+                      "type": "text",
+                      "uuid": "1bd8cf4c-0e4a-4d4d-a14c-cf6b4468b02a"
+                    },
+                    {
+                      "key": "email",
+                      "value": "tuladharsushant01@gmail.com",
+                      "type": "text",
+                      "uuid": "c5b82b05-4558-48bc-874e-fdbe96e6b868",
+                      "disabled": true
+                    },
+                    {
+                      "key": "dob",
+                      "value": "1996-01-14",
+                      "type": "text",
+                      "uuid": "ce60398f-3d68-4a22-9eec-a32852dda83a"
+                    },
+                    {
+                      "key": "phone",
+                      "value": "0401109194",
+                      "type": "text",
+                      "uuid": "4f2de0cf-7003-4fc3-81c4-940414b54fed"
+                    },
+                    {
+                      "key": "password",
+                      "value": "Test@123",
+                      "type": "text",
+                      "uuid": "48d46486-c0df-4a4a-81d6-ce4d39ef8b3e"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "localhost:3000/api/register",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "register"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Register the User with No DOB",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 400\", function () {\r",
+                      "    pm.response.to.have.status(400);\r",
+                      "    const body = pm.response.json();\r",
+                      "    pm.expect(body.error).to.eql(\"\\\"dob\\\" is required\");\r",
+                      "})\r",
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "first_name",
+                      "value": "Sushant",
+                      "type": "text",
+                      "uuid": "9dd6fdc7-459c-4b21-8f18-0cff93a88f57"
+                    },
+                    {
+                      "key": "last_name",
+                      "value": "Tuladhar",
+                      "type": "text",
+                      "uuid": "1bd8cf4c-0e4a-4d4d-a14c-cf6b4468b02a"
+                    },
+                    {
+                      "key": "email",
+                      "value": "tuladharsushant01@gmail.com",
+                      "type": "text",
+                      "uuid": "c5b82b05-4558-48bc-874e-fdbe96e6b868"
+                    },
+                    {
+                      "key": "dob",
+                      "value": "1996-01-14",
+                      "type": "text",
+                      "uuid": "ce60398f-3d68-4a22-9eec-a32852dda83a",
+                      "disabled": true
+                    },
+                    {
+                      "key": "phone",
+                      "value": "0401109194",
+                      "type": "text",
+                      "uuid": "4f2de0cf-7003-4fc3-81c4-940414b54fed"
+                    },
+                    {
+                      "key": "password",
+                      "value": "Test@123",
+                      "type": "text",
+                      "uuid": "48d46486-c0df-4a4a-81d6-ce4d39ef8b3e"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "localhost:3000/api/register",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "register"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Register the User with No Phone",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 400\", function () {\r",
+                      "    pm.response.to.have.status(400);\r",
+                      "    const body = pm.response.json();\r",
+                      "    pm.expect(body.error).to.eql(\"\\\"phone\\\" is required\");\r",
+                      "})\r",
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "first_name",
+                      "value": "Sushant",
+                      "type": "text",
+                      "uuid": "9dd6fdc7-459c-4b21-8f18-0cff93a88f57"
+                    },
+                    {
+                      "key": "last_name",
+                      "value": "Tuladhar",
+                      "type": "text",
+                      "uuid": "1bd8cf4c-0e4a-4d4d-a14c-cf6b4468b02a"
+                    },
+                    {
+                      "key": "email",
+                      "value": "tuladharsushant01@gmail.com",
+                      "type": "text",
+                      "uuid": "c5b82b05-4558-48bc-874e-fdbe96e6b868"
+                    },
+                    {
+                      "key": "dob",
+                      "value": "1996-01-14",
+                      "type": "text",
+                      "uuid": "ce60398f-3d68-4a22-9eec-a32852dda83a"
+                    },
+                    {
+                      "key": "phone",
+                      "value": "0401109194",
+                      "type": "text",
+                      "uuid": "4f2de0cf-7003-4fc3-81c4-940414b54fed",
+                      "disabled": true
+                    },
+                    {
+                      "key": "password",
+                      "value": "Test@123",
+                      "type": "text",
+                      "uuid": "48d46486-c0df-4a4a-81d6-ce4d39ef8b3e"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "localhost:3000/api/register",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "register"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Register the User with No Password",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 400\", function () {\r",
+                      "    pm.response.to.have.status(400);\r",
+                      "    const body = pm.response.json();\r",
+                      "    pm.expect(body.error).to.eql(\"\\\"password\\\" is required\");\r",
+                      "})\r",
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "first_name",
+                      "value": "Sushant",
+                      "type": "text",
+                      "uuid": "9dd6fdc7-459c-4b21-8f18-0cff93a88f57"
+                    },
+                    {
+                      "key": "last_name",
+                      "value": "Tuladhar",
+                      "type": "text",
+                      "uuid": "1bd8cf4c-0e4a-4d4d-a14c-cf6b4468b02a"
+                    },
+                    {
+                      "key": "email",
+                      "value": "tuladharsushant01@gmail.com",
+                      "type": "text",
+                      "uuid": "c5b82b05-4558-48bc-874e-fdbe96e6b868"
+                    },
+                    {
+                      "key": "dob",
+                      "value": "1996-01-14",
+                      "type": "text",
+                      "uuid": "ce60398f-3d68-4a22-9eec-a32852dda83a"
+                    },
+                    {
+                      "key": "phone",
+                      "value": "0401109194",
+                      "type": "text",
+                      "uuid": "4f2de0cf-7003-4fc3-81c4-940414b54fed"
+                    },
+                    {
+                      "key": "password",
+                      "value": "Test@123",
+                      "type": "text",
+                      "uuid": "48d46486-c0df-4a4a-81d6-ce4d39ef8b3e",
+                      "disabled": true
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "localhost:3000/api/register",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "register"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                  ""
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                  "pm.test(\"Response time is less than 500ms\", function () {\r",
+                  "    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+                  "})"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Register Valid User",
+          "item": [
+            {
+              "name": "Register the User Valid Test Case",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 201\", function () {\r",
+                      "    pm.response.to.have.status(201);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Check the message of success in the response body\", function () {\r",
+                      "    const jsonData = pm.response.json();\r",
+                      "    pm.expect(jsonData.message).to.eql(\"User registered successfully\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      "const date= new Date()\r",
+                      "\r",
+                      "pm.collectionVariables.set(\"new_email\", \"test\"+date.getFullYear()+date.getMonth()+date.getDate()+date.getHours()+date.getMinutes()+date.getSeconds()+date.getMilliseconds()+\"@gmail.com\");"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "first_name",
+                      "value": "Sushant",
+                      "type": "text",
+                      "uuid": "9dd6fdc7-459c-4b21-8f18-0cff93a88f57"
+                    },
+                    {
+                      "key": "last_name",
+                      "value": "Tuladhar",
+                      "type": "text",
+                      "uuid": "1bd8cf4c-0e4a-4d4d-a14c-cf6b4468b02a"
+                    },
+                    {
+                      "key": "email",
+                      "value": "{{new_email}}",
+                      "type": "text",
+                      "uuid": "c5b82b05-4558-48bc-874e-fdbe96e6b868"
+                    },
+                    {
+                      "key": "dob",
+                      "value": "1996-01-14",
+                      "type": "text",
+                      "uuid": "ce60398f-3d68-4a22-9eec-a32852dda83a"
+                    },
+                    {
+                      "key": "phone",
+                      "value": "0401109194",
+                      "type": "text",
+                      "uuid": "4f2de0cf-7003-4fc3-81c4-940414b54fed"
+                    },
+                    {
+                      "key": "password",
+                      "value": "Test@123",
+                      "type": "text",
+                      "uuid": "48d46486-c0df-4a4a-81d6-ce4d39ef8b3e"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "localhost:3000/api/register",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "register"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Login",
+      "item": [
+        {
+          "name": "Login Valid User",
+          "item": [
+            {
+              "name": "Login user",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "email",
+                      "value": "{{new_email}}",
+                      "type": "text",
+                      "uuid": "c5b82b05-4558-48bc-874e-fdbe96e6b868"
+                    },
+                    {
+                      "key": "password",
+                      "value": "Test@123",
+                      "type": "text",
+                      "uuid": "48d46486-c0df-4a4a-81d6-ce4d39ef8b3e"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "localhost:3000/api/login",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Get the user details",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWZhZDBkM2JjMDQ4MTQ3OGU5M2UyZDIiLCJlbWFpbCI6InR1bGFkaGFyc3VzaGFudDAxQGdtYWlsLmNvbSIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE3NzgxNjY1MzAsImV4cCI6MTc3ODE3MDEzMH0.9uIEdD-JAxoOU-aMlxYA67aRYMfYbf-26pKPFsLpTUU",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "localhost:3000/api/user/69fad0d3bc0481478e93e2d2",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "user",
+            "69fad0d3bc0481478e93e2d2"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get User Videos",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "user_id",
+              "value": "69fad0d3bc0481478e93e2d2",
+              "type": "text",
+              "uuid": "48d46486-c0df-4a4a-81d6-ce4d39ef8b3e"
+            }
+          ]
+        },
+        "url": {
+          "raw": "localhost:3000/api/videos",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "videos"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Settings",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:3000/api/settings",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "settings"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update Settings",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"key\": \"video_format\",\r\n    \"value\": [\r\n        \".mp4\", \".avi\", \".mov\"\r\n    ]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:3000/api/settings",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "settings"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "new_email",
+      "value": ""
+    }
+  ]
+}

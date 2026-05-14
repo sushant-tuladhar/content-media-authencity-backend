@@ -1,3 +1,4 @@
+require('dotenv').config();
 const Joi = require('@hapi/joi');
 const {
     User,
@@ -121,7 +122,6 @@ exports.login= async (req,res)=>{
             email: userRes.email,
             isAdmin: userRes.isAdmin
         });
-
         const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
         await userLoginHistory(userRes._id, req.ip);
         return res.status(200).json({ message: 'Login successful', user: userRes, token: 'Bearer ' + token });

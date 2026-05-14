@@ -1022,30 +1022,91 @@
       ]
     },
     {
-      "name": "Get the user details",
-      "request": {
-        "method": "GET",
-        "header": [
-          {
-            "key": "Authorization",
-            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWZhZDBkM2JjMDQ4MTQ3OGU5M2UyZDIiLCJlbWFpbCI6InR1bGFkaGFyc3VzaGFudDAxQGdtYWlsLmNvbSIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE3NzgxNjY1MzAsImV4cCI6MTc3ODE3MDEzMH0.9uIEdD-JAxoOU-aMlxYA67aRYMfYbf-26pKPFsLpTUU",
-            "type": "text"
-          }
-        ],
-        "url": {
-          "raw": "localhost:3000/api/user/69fad0d3bc0481478e93e2d2",
-          "host": [
-            "localhost"
-          ],
-          "port": "3000",
-          "path": [
-            "api",
-            "user",
-            "69fad0d3bc0481478e93e2d2"
+      "name": "User Details",
+      "item": [
+        {
+          "name": "User Details Valid",
+          "item": [
+            {
+              "name": "Get the user details",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "{{token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "localhost:3000/api/user/{{user_id}}",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "user",
+                    "{{user_id}}"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "User Details Invalid Test Cases",
+          "item": [
+            {
+              "name": "Get the user details with no  valid token",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 403\", function () {\r",
+                      "    pm.response.to.have.status(403);\r",
+                      "})\r",
+                      "\r",
+                      "pm.test(\"Response body contains error message\", function () {\r",
+                      "    const body = pm.response.json();\r",
+                      "    pm.expect(body.error).to.eql(\"Invalid token\");\r",
+                      "})"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWZhZDBkM2JjMDQ4MTQ3OGU5M2UyZDIiLCJlbWFpbCI6InR1bGFkaGFyc3VzaGFudDAxQGdtYWlsLmNvbSIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE3NzgxNjY1MzAsImV4cCI6MTc3ODE3MDEzMH0.9uIEdD-JAxoOU-aMlxYA67aRYMfYbf-26pKPFsLpTUU",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "localhost:3000/api/user/{{user_id}}",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3000",
+                  "path": [
+                    "api",
+                    "user",
+                    "{{user_id}}"
+                  ]
+                }
+              },
+              "response": []
+            }
           ]
         }
-      },
-      "response": []
+      ]
     },
     {
       "name": "Get User Videos",
@@ -1141,6 +1202,10 @@
     },
     {
       "key": "token",
+      "value": ""
+    },
+    {
+      "key": "user_id",
       "value": ""
     }
   ]

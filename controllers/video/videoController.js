@@ -1,5 +1,6 @@
 const fs = require('fs');
 const crypto = require('crypto');
+const Joi = require('joi');
 const Video = require('../../models/video/video');
 const { extractVideoMetadata } = require('../../utils/metadataExtractor');
 const { uploadLargeFileToS3 } = require('../../utils/s3Uploader');
@@ -10,7 +11,7 @@ const { uploadLargeFileToS3 } = require('../../utils/s3Uploader');
  * @param {*} res 
  */
 exports.getUserVideos = async (req,res)=>{
-    const userId = req.body.user_id;
+    const userId = req.user._id; // Securely reading from the authenticated session
     try {
         const videos = await Video.find({ userId: userId });
         res.status(200).json({ videos: videos });
@@ -30,50 +31,80 @@ exports.uploadVideo = async (req, res) => {
             return res.status(400).json({ error: "No video file provided." });
         }
 
-        const { title, description } = req.body;
-        if (!title || !description) {
-            // Cleanup local file
-            fs.unlinkSync(req.file.path);
-            return res.status(400).json({ error: "Title and description are required." });
+        const schema = Joi.object({
+            title: Joi.string().trim().required().messages({
+                'string.empty': 'Title is required.',
+                'any.required': 'Title is required.'
+            }),
+            description: Joi.string().trim().required().messages({
+                'string.empty': 'Description is required.',
+                'any.required': 'Description is required.'
+            })
+        });
+
+        const { error, value } = schema.validate(req.body);
+        if (error) {
+            // Cleanup local file on validation error
+            await fs.promises.unlink(req.file.path).catch(console.error);
+            return res.status(400).json({ error: error.details[0].message });
         }
 
-        // 1. Calculate SHA256 Hash
-        const fileBuffer = fs.readFileSync(req.file.path);
-        const hashSum = crypto.createHash('sha256');
-        hashSum.update(fileBuffer);
-        const sha256_hash = hashSum.digest('hex');
+        const { title, description } = value;
+        let videoId = null;
 
-        // 2. Extract Metadata
-        const metadata = await extractVideoMetadata(req.file.path);
-
-        // 3. Upload to S3
-        const s3Result = await uploadLargeFileToS3(req.file.path, req.file.originalname, req.file.mimetype);
-
-        // 4. Save to Database
+        // 0. Create initial database record in 'processing' state
         const video = new Video({
             title,
             description,
-            url: s3Result.url,
-            s3_key: s3Result.s3_key,
             original_filename: req.file.originalname,
             mime_type: req.file.mimetype,
             file_size: req.file.size,
-            userId: req.user._id, // Set by your authentication middleware
-            sha256_hash,
-            upload_status: 'completed',
-            metadata
+            userId: req.user._id,
+            upload_status: 'processing'
         });
+        await video.save();
+        videoId = video._id;
 
+        // 1. Setup Stream for Hashing & S3 Upload
+        const hashStream = fs.createReadStream(req.file.path);
+        const uploadStream = fs.createReadStream(req.file.path);
+        const hashSum = crypto.createHash('sha256');
+        
+        // As the stream flows to S3, calculate the hash
+        hashStream.on('data', chunk => hashSum.update(chunk));
+
+        // 2 & 3. Run Metadata Extraction and S3 Upload in parallel
+        const [metadata, s3Result] = await Promise.all([
+            extractVideoMetadata(req.file.path),
+            uploadLargeFileToS3(uploadStream, req.file.originalname, req.file.mimetype)
+        ]);
+        
+        const sha256_hash = hashSum.digest('hex');
+
+        // 4. Update Database with Success
+        video.url = s3Result.url;
+        video.s3_key = s3Result.s3_key;
+        video.sha256_hash = sha256_hash;
+        video.metadata = metadata;
+        video.upload_status = 'completed';
         await video.save();
 
         // 5. Cleanup local file
-        fs.unlinkSync(req.file.path);
+        if (req.file) {
+            await fs.promises.unlink(req.file.path).catch(console.error);
+        }
 
         res.status(201).json({ message: "Video uploaded successfully", video });
     } catch (error) {
-        if (req.file && fs.existsSync(req.file.path)) {
-            fs.unlinkSync(req.file.path);
+        if (req.file) {
+            await fs.promises.unlink(req.file.path).catch(console.error);
         }
+        
+        // If we created a video document but failed midway, mark it as failed
+        if (typeof videoId !== 'undefined' && videoId) {
+            await Video.findByIdAndUpdate(videoId, { upload_status: 'failed' }).catch(console.error);
+        }
+
         console.error('Video upload error:', error);
         res.status(500).json({ error: "An error occurred while uploading the video.", details: error.message });
     }

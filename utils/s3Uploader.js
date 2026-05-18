@@ -10,8 +10,7 @@ const s3Client = new S3Client({
     }
 });
 
-const uploadLargeFileToS3 = async (filePath, originalFilename, mimeType) => {
-    const fileStream = fs.createReadStream(filePath);
+const uploadLargeFileToS3 = async (fileStream, originalFilename, mimeType) => {
     const uniqueFileName = `${Date.now()}-${originalFilename}`;
 
     const uploader = new Upload({

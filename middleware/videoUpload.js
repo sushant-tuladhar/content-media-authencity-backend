@@ -2,9 +2,7 @@ const multer = require('multer');
 const fs = require('fs');
 
 const uploadDir = 'uploads/';
-if (!fs.existsSync(uploadDir)){
-    fs.mkdirSync(uploadDir, { recursive: true });
-}
+fs.mkdirSync(uploadDir, { recursive: true });
 
 // Configure Multer for a 500MB limit
 const upload = multer({ 

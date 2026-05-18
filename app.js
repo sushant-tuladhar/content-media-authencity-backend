@@ -2,9 +2,9 @@ require('dotenv').config();
 const express=require('express');
 const dns = require('node:dns');
 dns.setDefaultResultOrder('ipv4first');
-const app=express();
 const path=require('path');
 const cors=require('cors');
+const helmet=require('helmet');
 
 const mongoose=require('mongoose');
 const session=require('express-session');
@@ -16,7 +16,11 @@ const { sessionTimeout } = require('./middleware/auth');
 const authRoutes= require('./routes/auth/authRoutes');
 const userRoutes=require('./routes/user/userRoute');
 const settingRouter= require('./routes/settings/settingsRoute');
+const videoRoutes = require('./routes/video/videoRoutes');
 
+const app=express();
+app.disable('x-powered-by');
+app.use(helmet());
 //Mongoose connection here
 mongoose.connect(process.env.MONGODB_URI).then(() => {
     console.log("MongoDB connected");
@@ -25,6 +29,9 @@ mongoose.connect(process.env.MONGODB_URI).then(() => {
 });
 
 //Initialization of express here
+
+app.disable('x-powered-by');
+app.use(helmet());
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
 
@@ -39,7 +46,11 @@ app.use(cors({
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: true,
+    cookie:{
+        httpOnly: true,
+        maxAge: 60 * 60 * 1000 // 1 hour
+    }
 }));
 app.use(sessionTimeout);
 
@@ -61,6 +72,7 @@ app.use((err, req, res, next) => {
 app.use('/',authRoutes);
 app.use('/',userRoutes);
 app.use('/',settingRouter);
+app.use('/', videoRoutes);
 
 app.listen(process.env.PORT,()=>{   
     console.log(`Server is running on port ${process.env.PORT}`);

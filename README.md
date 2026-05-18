@@ -22,3 +22,7 @@ Content Media Authencity backend
 <code>GOOGLE_CLIENT_ID</code>=google_oauth_client_id <br>
 <code>GOOGLE_CLIENT_SECRET</code>=google_oauth_client_secret <br>
 <code>GOOGLE_CALLBACK_URL</code>=http://localhost:3000/api/auth/google/callback <br>
+<code>AWS_REGION</code>=ap-southeast-2 <br>
+<code>AWS_S3_BUCKET_NAME</code>=your_bucket_name <br>
+<code>AWS_ACCESS_KEY_ID</code>=your_AWS_ACCESS_KEY_ID <br>
+<code>AWS_SECRET_ACCESS_KEY</code>=your_AWS_SECRET_ACCESS_KEY <br>

@@ -1,5 +1,5 @@
 const Settings = require('../../models/settings/settings');
-const joi= require('@hapi/joi');
+const joi= require('joi');
 
 exports.settings= async (req, res)=>{
     try {

@@ -1,5 +1,5 @@
 require('dotenv').config();
-const Joi = require('@hapi/joi');
+const Joi = require('joi');
 const {
     User,
     UserLoginHistory

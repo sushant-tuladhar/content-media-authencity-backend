@@ -6,7 +6,7 @@ const Video=require('../../models/video/video');
  * @param {*} res 
  */
 exports.getUserVideos = async (req,res)=>{
-    const userId = req.body.userId;
+    const userId = req.body.user_id;
     try {
         const videos = await Video.find({ user: userId });
         res.status(200).json({ videos: videos });
